@@ -1,7 +1,7 @@
 import json
 from scraper import scrape_user
 
-with open(r"C:\Users\USER\OneDrive\Desktop\new-sentiment-analyzer\university_portal\users.json") as f:
+with open("users.json") as f:
     users = json.load(f)
 
 global_has_changes = False
