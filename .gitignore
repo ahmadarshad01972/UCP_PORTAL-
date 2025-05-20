@@ -1,2 +1,29 @@
-# Allow this folder to be created
-!.keep
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode, PyCharm
+.vscode/
+.idea/
+
+# Selenium profiles or local Chrome data
+*.log
+*.db
+*.bak
+MySeleniumProfile/
+chromedriver.exe
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Ignore sensitive data if needed
+users.json
+
+
