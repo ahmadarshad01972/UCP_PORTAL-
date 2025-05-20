@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from tab_opener import process_courses_in_new_tabs
-
+from pathlib import Path
 import smtplib
 from email.message import EmailMessage
 
@@ -35,6 +35,10 @@ def scrape_user(user,i):
     password = user["password"]
     notify_email = user["notify_email"]
     
+
+    Path(f"data/{roll}/current").mkdir(parents=True, exist_ok=True)
+    Path(f"data/{roll}/last").mkdir(parents=True, exist_ok=True)
+
     direct_login_url = (
         "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=4a6562df-f309-48d2-94c2-16d03a5c3644"
         "&response_type=code"
