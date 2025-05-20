@@ -7,7 +7,7 @@ from pathlib import Path
 ADMIN_EMAIL = "ahmadarshad01972@gmail.com"
 ADMIN_PASS = "ahmad.2458"
 DATA_DIR = Path("data")
-USER_CREDENTIALS_FILE = r"C:\Users\USER\OneDrive\Desktop\new-sentiment-analyzer\university_portal\users.json"
+USER_CREDENTIALS_FILE = "users.json"
 
 # ----- Helper Functions -----
 def load_users():
