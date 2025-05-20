@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from tab_opener import process_courses_in_new_tabs
-from pathlib import Path
+import os
 import smtplib
 from email.message import EmailMessage
 
@@ -35,10 +35,6 @@ def scrape_user(user,i):
     password = user["password"]
     notify_email = user["notify_email"]
     
-
-    Path(f"data/{roll}/current").mkdir(parents=True, exist_ok=True)
-    Path(f"data/{roll}/last").mkdir(parents=True, exist_ok=True)
-
     direct_login_url = (
         "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=4a6562df-f309-48d2-94c2-16d03a5c3644"
         "&response_type=code"
@@ -48,10 +44,18 @@ def scrape_user(user,i):
         "&sso_reload=true"
     )
 
+        
+
     options = Options()
-    user_data_dir = f"C:\\Users\\USER\\AppData\\Local\\Google\\Chrome\\User Data\\MySeleniumProfile_{i}"
-    options.add_argument(f"--user-data-dir={user_data_dir}")
-    options.add_argument("--profile-directory=Default")
+
+    if os.environ.get("CI") != "true":  # running locally
+        user_data_dir = r"C:\Users\USER\AppData\Local\Google\Chrome\User Data\MySeleniumProfile"
+        options.add_argument(f"--user-data-dir={user_data_dir}")
+        options.add_argument("--profile-directory=Default")
+    else:
+        options.add_argument("--headless=new")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
     wait = WebDriverWait(driver, 30)
