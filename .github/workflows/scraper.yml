@@ -13,3 +13,12 @@
 - name: Run main script
   run: |
     python backend/main.py
+
+- name: Commit and Push updated data
+  run: |
+    git config --global user.name "github-actions[bot]"
+    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    git add data/
+    git commit -m "🔄 Auto-update scraped data"
+    git push
+
