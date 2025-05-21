@@ -2,8 +2,8 @@ name: Run UCP Scraper Twice Daily
 
 on:
   schedule:
-    - cron: '0 6,18 * * *'   # Runs every day at 6am and 6pm UTC
-  workflow_dispatch:         # ✅ Enables manual trigger from GitHub UI
+    - cron: '0 6,18 * * *'  # every day at 6am and 6pm UTC
+  workflow_dispatch:         # ✅ enables "Run workflow" button
 
 jobs:
   scrape:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: '3.10'     # ✅ must be a string, correctly indented
 
       - name: Install dependencies
         run: |
@@ -34,5 +34,4 @@ jobs:
           git commit -m "🔄 Auto-update scraped data"
           git push
         env:
-          # ✅ Required to allow pushing (default permissions must be "Read and write")
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
