@@ -1,7 +1,7 @@
 import json
 from scraper import scrape_user
 
-with open("users.json") as f:
+with open("frontend/users.json") as f:
     users = json.load(f)
 
 global_has_changes = False
