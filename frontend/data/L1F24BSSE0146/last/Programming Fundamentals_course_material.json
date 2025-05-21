@@ -1,0 +1,78 @@
+[
+  [
+    "1",
+    "CP113 Programming Fundamentals Outline-Theory.doc",
+    "Course Outline",
+    ""
+  ],
+  [
+    "2",
+    "Installation guide for JDK.mp4",
+    "Installation of JDK",
+    ""
+  ],
+  [
+    "3",
+    "Starting-Out-With-Java.pdf",
+    "Text Book",
+    ""
+  ],
+  [
+    "4",
+    "test.java",
+    "first program",
+    ""
+  ],
+  [
+    "5",
+    "",
+    "public class test {\n    public static void main(String[] args){\n        int a=44,b=3,c=6;\n        if(a > b) {\n            ++b;\n            --c;\n            if (a > c) {\n                ++c;\n                --b;\n                if (b < c) {\n                    --a;\n                    b += 10;\n                    c++;\n                    c = a + b;\n                }\n            }\n        }\n        else{\n            --a;\n            --b;\n            c= ++c + --b;}\n        System.out.println(a+\" \"+b+\" \"+c+\" \");\n    }\n}",
+    ""
+  ],
+  [
+    "6",
+    "",
+    "public class test {\n    public static void main(String[] args){\n       int i;\n       for (i=1;i<=5;i++)//row\n       {\n           for (int j=1;j<=5;j++)//col\n           {\n               System.out.print(i);\n           }\n           System.out.println();\n       }\n    }\n}",
+    ""
+  ],
+  [
+    "7",
+    "",
+    "public class test {\n    static void add(){\n        int a=11,b=12;\n        System.out.println(a+b);\n    }\n    static void add1(int a,int b){\n        System.out.println(a+b);\n    }\n    static int add2(int a,int b){\n        return a+b;\n    }\n    static int add3(int a,int b){\n        add();\n        System.out.println(add2(11,31));\n        return 1;\n    }\n    public static void main(String[] args){\n       // add();\n        //add1(11,12);\n        //int sum=add2(11,12);\n        //System.out.println(sum);\n       // System.out.println(add2(11,12));\n        System.out.println(add3(11,12));\n    }\n}",
+    ""
+  ],
+  [
+    "8",
+    "",
+    "public class test {\n    static int a=10,b=5,c=4;\n    static int func(int i){\n        a=i;\n        return a%2;\n    }\n    static int func(int i,int j){\n        i=func(b);\n        return (i+j)%2;\n    }\n    static int func(int i,int j,int k){\n        i=a;\n        j=b;\n        k=func(i)+func(i,j);\n        return i+j+k;\n    }\n    public static void main(String[] args){\n       for (int n=1;n<=5;n++)\n       {\n           System.out.println(func3(a,b,c));\n       }\n    }\n}",
+    ""
+  ],
+  [
+    "9",
+    "",
+    "import java.util.*;\npublic class test {\n    static int a=10;\n    static int b=10;\n    static void func(int k,int m){\n        int a=k+2;\n        int b=m-2;\n        System.out.println(a+\" \"+b);\n    }\n    public static void main(String[] args){\n        Scanner s=new Scanner(System.in);\n        int i=s.nextInt();//5\n        a=i;\n        int j=s.nextInt();//11\n        b=j;\n        func(a,b);\n        System.out.println(a+\" \"+b);\n    }\n}",
+    "import java.util.*;\npublic class test {\n    static int a=10;\n    static int b=10;\n    static void func(int k,int m){\n        int a=k+2;\n        int b=m-2;\n        System.out.println(a+\" \"+b);\n    }\n    public static void main(String[] args){\n        Scanner s=new Scanner(System.in);\n        int i=s.nextInt();//5\n        a=i;\n        int j=s.nextInt();//11\n        b=j;\n        func(a,b);\n        System.out.println(a+\" \"+b);\n    }\n}",
+    ""
+  ],
+  [
+    "import java.util.*;\npublic class test {\n    static int a=10;\n    static int b=10;\n    static void func(int k,int m){\n        int a=k+2;\n        int b=m-2;\n        System.out.println(a+\" \"+b);\n    }\n    public static void main(String[] args){\n        Scanner s=new Scanner(System.in);\n        int i=s.nextInt();//5\n        a=i;\n        int j=s.nextInt();//11\n        b=j;\n        func(a,b);\n        System.out.println(a+\" \"+b);\n    }\n}"
+  ],
+  [
+    "10",
+    "Quiz 02 - Sol.docx",
+    "Quiz 02 Solution",
+    ""
+  ],
+  [
+    "11",
+    "",
+    "import java.util.Scanner;\npublic class ARRAY {\n    public static void main(String[] args){\n        int[] arr={1,2,3,4,5,6}; //static\n                 // 0 1 2 3 4 5-> index\n        //System.out.print(arr[2]);\n        //arr[1] = 30;\n        //arr[4] = 22;\n        //arr[6]=10;\n        //1,30,3,4,22\n       /* int size=arr.length; //6\n        Scanner s=new Scanner(System.in);\n        for(int i=0;i<arr.length;i++){\n            System.out.print(\"Enter Element at \"+i+\": \");\n            arr[i]=s.nextInt();\n        }\n        for(int i=0;i<size;i++){\n            System.out.println(i+\" \"+arr[i]);\n        }*/\n        //String[] str={\"abc\",\"xyz\",\"jkl\"};\n        //size=s.nextInt();\n        int[] a=new int[10]; //dynamic\n        for(int i=0;i<a.length;i++){\n            System.out.println(i+\" \"+a[i]);\n        }\n        for(int d:a){ //for each\n            System.out.println(d);\n        }\n    }\n}",
+    ""
+  ],
+  [
+    "12",
+    "",
+    "Lecture Recording Link:\nArrays in Java",
+    ""
+  ]
+]
