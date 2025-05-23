@@ -46,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-screenshots
-          path: screenshot_*.png
+          path: backend/screenshot_*.png
