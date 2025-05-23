@@ -44,7 +44,10 @@ def scrape_user(user, i):
     )
 
     options = Options()
-    options.add_argument("--headless=new")  # ✅ for GitHub Actions
+    options.add_argument("--headless=new")
+    # ✅ for GitHub Actions
+    options.add_argument("--disable-blink-features=AutomationControlled")
+
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -117,6 +120,7 @@ def scrape_user(user, i):
                     password_input.send_keys(password)
                     safe_click("#idSIButton9")
                     handle_stay_signed_in()
+                    
                 except:
                     print("✅ Password not prompted after account selection — continuing.")
                     handle_stay_signed_in()
@@ -130,11 +134,18 @@ def scrape_user(user, i):
         else:
             print("Already signed in or session restored.")
 
-        dashboard_icon = wait.until(EC.presence_of_element_located(
-            (By.CSS_SELECTOR, "i.material-icons.md-24")
-        ))
-        driver.execute_script("arguments[0].scrollIntoView(true);", dashboard_icon)
-        print("✅ Login successful, dashboard loaded!")
+        for attempt in range(3):
+            try:
+                dashboard_icon = wait.until(EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, "i.material-icons.md-24")
+                ))
+                print("✅ Login successful, dashboard loaded!")
+                break
+            except Exception as e:
+                print(f"🔁 Waiting for dashboard... Attempt {attempt + 1}")
+                time.sleep(3)
+        else:
+            raise Exception("❌ Dashboard failed to load after login.")
 
         roll_num = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.uk-width-large-3-10 span:nth-child(2)")))
         number_text = roll_num.get_attribute("textContent").strip()
