@@ -1,3 +1,4 @@
+import os
 import json
 import re
 import time
@@ -12,7 +13,7 @@ from email.message import EmailMessage
 
 def send_email(subject, body, to_email):
     sender_email = "ahmadarshad01972@gmail.com"
-    app_password = "xumu djkm hhna unas"  # App Password from Gmail
+    app_password = "xumu djkm hhna unas"  # App Password
 
     msg = EmailMessage()
     msg["Subject"] = subject
@@ -45,14 +46,12 @@ def scrape_user(user, i):
 
     options = Options()
     options.add_argument("--headless=new")
-    # ✅ for GitHub Actions
-    options.add_argument("--disable-blink-features=AutomationControlled")
-
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
-    user_data_dir = f"/tmp/selenium_profile_{i}"  # safer path for CI
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    user_data_dir = f"/tmp/selenium_profile_{i}"
     options.add_argument(f"--user-data-dir={user_data_dir}")
     options.add_argument("--profile-directory=Default")
 
@@ -95,23 +94,22 @@ def scrape_user(user, i):
                     acc.click()
                     print(f"✅ Clicked account with aria-label: {label}")
                     return True
-            print("⚠ Desired account not found in account selection list.")
+            print("⚠ Account not found. Clicking 'Use another account' instead.")
             try:
                 other_tile = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@id='otherTile']")))
                 other_tile.click()
-                print("🔄 Clicked 'Use another account' button to proceed to manual login.")
             except:
-                print("❌ 'Use another account' button not found.")
+                print("❌ 'Other account' not clickable.")
         except:
-            print("No account selection screen detected. Continuing normally...")
+            print("No account selection screen detected.")
         return False
 
     try:
         driver.get(direct_login_url)
+        print("🌐 Current URL:", driver.current_url)
+        print("🕵️ Page title:", driver.title)
 
         if "login.microsoftonline.com" in driver.current_url:
-            print("Checking for account selection page...")
-
             if handle_account_selection_by_aria_label():
                 try:
                     password_input = WebDriverWait(driver, 5).until(
@@ -120,33 +118,30 @@ def scrape_user(user, i):
                     password_input.send_keys(password)
                     safe_click("#idSIButton9")
                     handle_stay_signed_in()
-                    
                 except:
-                    print("✅ Password not prompted after account selection — continuing.")
+                    print("✅ Password not prompted — proceeding.")
                     handle_stay_signed_in()
-            elif "login.microsoftonline.com" in driver.current_url:
-                print("No account selection. Proceeding with manual login...")
+            else:
+                print("Manual login fallback...")
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#i0116"))).send_keys(email)
                 safe_click("#idSIButton9")
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#i0118"))).send_keys(password)
                 safe_click("#idSIButton9")
                 handle_stay_signed_in()
-        else:
-            print("Already signed in or session restored.")
 
+        time.sleep(5)  # Let UCP load
         for attempt in range(3):
             try:
-                dashboard_icon = wait.until(EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "i.material-icons.md-24")
-                ))
+                icon = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "i.material-icons.md-24")))
                 print("✅ Login successful, dashboard loaded!")
                 break
-            except Exception as e:
-                print(f"🔁 Waiting for dashboard... Attempt {attempt + 1}")
+            except:
+                print(f"🔁 Retrying dashboard load ({attempt + 1})")
                 time.sleep(3)
         else:
-            raise Exception("❌ Dashboard failed to load after login.")
+            raise Exception("❌ Dashboard failed to load.")
 
+        # Student info
         roll_num = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.uk-width-large-3-10 span:nth-child(2)")))
         number_text = roll_num.get_attribute("textContent").strip()
         st_name = wait.until(EC.presence_of_element_located((By.XPATH, "//span[@class='uk-text-truncate']")))
@@ -155,26 +150,24 @@ def scrape_user(user, i):
         grade = grade_box.get_attribute("textContent").strip()
         clean_grade = re.sub(r'\s+', ' ', grade).strip()
 
-        print(f"👤 Welcome {student} (Roll: {number_text}) - Grade: {clean_grade}")
+        print(f"👤 {student} | {number_text} | Grade: {clean_grade}")
 
         has_changes, messages = process_courses_in_new_tabs(driver, number_text)
-
         if has_changes:
             final_message = "\n\n".join(messages)
-            send_email(
-                subject="📢 UCP Portal Update Detected",
-                body=final_message,
-                to_email=notify_email
-            )
+            send_email("📢 UCP Portal Update Detected", final_message, notify_email)
         else:
-            print("📭 No changes, no email sent.")
-
+            print("📭 No updates found.")
         return has_changes
 
     except Exception as e:
-        print(f"❌ Error for user {email}: {e}")
+        print(f"❌ Error for {email}: {e}")
+        # 📸 Take screenshot for debugging
+        screenshot_name = f"screenshot_{email.split('@')[0]}.png"
+        driver.save_screenshot(screenshot_name)
+        print(f"📸 Screenshot saved as {screenshot_name}")
         return False
 
     finally:
-        print("Process completed. You can manually close the browser.")
+        print("Closing browser.")
         driver.quit()
