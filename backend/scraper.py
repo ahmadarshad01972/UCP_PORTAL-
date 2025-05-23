@@ -82,6 +82,14 @@ def scrape_user(user, i):
                 screenshot_name = f"screenshot2_{email.split('@')[0]}.png"
                 driver.save_screenshot(screenshot_name)
                 print(f"📸 Screenshot saved as {screenshot_name}")
+            try:
+                password_input = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "#i0118"))
+                )
+                password_input.send_keys(password)
+                safe_click("#idSIButton9")
+            except:
+                    print("✅ Password not prompted — proceeding.")
             safe_click("#idSIButton9")
             print("Clicked on 'Stay Signed In'.")
             screenshot_name = f"screenshot3_{email.split('@')[0]}.png"
