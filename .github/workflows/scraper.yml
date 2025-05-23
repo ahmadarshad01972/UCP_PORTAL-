@@ -1,4 +1,4 @@
-name: Run UCP Scraper Now  # <-- 👈 Add this at the top
+name: Run UCP Scraper Noww  # <-- 👈 Add this at the top
 
 on:
   schedule:
