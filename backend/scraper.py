@@ -130,7 +130,10 @@ def scrape_user(user, i):
         else:
             print("Already signed in or session restored.")
 
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "i.material-icons.md-24")))
+        dashboard_icon = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "i.material-icons.md-24")
+        ))
+        driver.execute_script("arguments[0].scrollIntoView(true);", dashboard_icon)
         print("✅ Login successful, dashboard loaded!")
 
         roll_num = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.uk-width-large-3-10 span:nth-child(2)")))
