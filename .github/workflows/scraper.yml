@@ -1,3 +1,10 @@
+name: Run UCP Scraper Now  # <-- 👈 Add this at the top
+
+on:
+  schedule:
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
