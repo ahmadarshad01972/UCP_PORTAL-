@@ -51,8 +51,8 @@ def scrape_user(user, i):
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    user_data_dir = f"/tmp/selenium_profile_{i}"
-    options.add_argument(f"--user-data-dir={user_data_dir}")
+    #user_data_dir = f"/tmp/selenium_profile_{i}"
+    #options.add_argument(f"--user-data-dir={user_data_dir}")
     options.add_argument("--profile-directory=Default")
 
     driver = webdriver.Chrome(options=options)
