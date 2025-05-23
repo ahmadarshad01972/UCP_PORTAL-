@@ -35,3 +35,9 @@ jobs:
           git push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: Upload screenshots (if any)
+          uses: actions/upload-artifact@v3
+          with:
+              name: debug-screenshots
+              path: screenshot_*.png
+
