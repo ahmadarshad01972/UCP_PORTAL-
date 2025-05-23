@@ -79,8 +79,14 @@ def scrape_user(user, i):
                     print("Ticked 'Don't show this again'.")
             except:
                 print("Checkbox 'Don't show this again' not found or already ticked.")
+                screenshot_name = f"screenshot2_{email.split('@')[0]}.png"
+                driver.save_screenshot(screenshot_name)
+                print(f"📸 Screenshot saved as {screenshot_name}")
             safe_click("#idSIButton9")
             print("Clicked on 'Stay Signed In'.")
+            screenshot_name = f"screenshot3_{email.split('@')[0]}.png"
+            driver.save_screenshot(screenshot_name)
+            print(f"📸 Screenshot saved as {screenshot_name}")
         except:
             print("Stay signed in prompt not shown or already signed in.")
 
@@ -108,6 +114,10 @@ def scrape_user(user, i):
         driver.get(direct_login_url)
         print("🌐 Current URL:", driver.current_url)
         print("🕵️ Page title:", driver.title)
+        
+        screenshot_name = f"screenshot1_{email.split('@')[0]}.png"
+        driver.save_screenshot(screenshot_name)
+        print(f"📸 Screenshot saved as {screenshot_name}")
 
         if "login.microsoftonline.com" in driver.current_url:
             if handle_account_selection_by_aria_label():
@@ -140,6 +150,9 @@ def scrape_user(user, i):
                 time.sleep(3)
         else:
             raise Exception("❌ Dashboard failed to load.")
+        screenshot_name = f"screenshot4_{email.split('@')[0]}.png"
+        driver.save_screenshot(screenshot_name)
+        print(f"📸 Screenshot saved as {screenshot_name}")
 
         # Student info
         roll_num = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.uk-width-large-3-10 span:nth-child(2)")))
@@ -163,7 +176,7 @@ def scrape_user(user, i):
     except Exception as e:
         print(f"❌ Error for {email}: {e}")
         # 📸 Take screenshot for debugging
-        screenshot_name = f"screenshot_{email.split('@')[0]}.png"
+        screenshot_name = f"screenshot5_{email.split('@')[0]}.png"
         driver.save_screenshot(screenshot_name)
         print(f"📸 Screenshot saved as {screenshot_name}")
         return False
