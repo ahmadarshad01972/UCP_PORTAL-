@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'     # ✅ must be a string, correctly indented
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
@@ -35,9 +35,9 @@ jobs:
           git push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        - name: Upload screenshots (if any)
-          uses: actions/upload-artifact@v3
-          with:
-              name: debug-screenshots
-              path: screenshot_*.png
 
+      - name: Upload screenshots (if any)
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-screenshots
+          path: screenshot_*.png
