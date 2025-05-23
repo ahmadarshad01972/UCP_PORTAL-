@@ -26,24 +26,29 @@ jobs:
         run: |
           python backend/main.py
 
+      - name: Debug: List files in repo
+        run: |
+          echo "📂 Files in working directory:"
+          find . -type f
+
       - name: Commit and Push updated data
         if: success()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
-          if git diff --cached --quiet; then
-            echo "🟢 No changes to commit."
-          else
-            git commit -m "🔄 Auto-update scraped data"
-            git push
-          fi
+          git commit -m "🔄 Auto-update scraped data"
+          git push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload screenshots (if any)
-        if: always()  # Always run, even if scraper fails
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: debug-screenshots
           path: backend/screenshot_*.png
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: false
