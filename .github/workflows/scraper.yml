@@ -1,26 +1,41 @@
-name: Run UCP Scraper Noww  # Top-level field
+name: Run UCP Scraper Noww
 
-on:                        # Event triggers (top-level)
-  schedule:               # Nested under 'on'
-    - cron: '...'         # List under 'schedule'
-  workflow_dispatch:      # Another trigger at the same level as 'schedule'
+on:
+  schedule:
+    - cron: '0 6,18 * * *'  # Runs daily at 6 AM and 6 PM UTC
+  workflow_dispatch:
 
-jobs:                     # Top-level
-  scrape:                 # Job name (under 'jobs')
-    runs-on: ubuntu-latest  # Job configuration
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
 
-    steps:                # List of steps within the job
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
-        with:              # 'with' is nested under the step using 'uses'
+        with:
           python-version: '3.10'
 
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
       - name: Run scraper
-        run: |             # Multi-line script
+        run: |
           python backend/main.py
+
+      - name: Commit and Push updated data
+        if: success()
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "🔄 Auto-update scraped data"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload screenshots (if any)
         if: always()
