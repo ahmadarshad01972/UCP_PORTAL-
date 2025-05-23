@@ -2,8 +2,8 @@ name: Run UCP Scraper Noww  # <-- 👈 Add this at the top
 
 on:
   schedule:
-    - cron: '0 6,18 * * *'
-  workflow_dispatch:
+    - cron: '0 6,18 * * *'  # Runs daily at 6 AM and 6 PM UTC
+  workflow_dispatch:         # Allows manual run from GitHub UI
 
 jobs:
   scrape:
@@ -27,6 +27,7 @@ jobs:
           python backend/main.py
 
       - name: Commit and Push updated data
+        if: success()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -37,6 +38,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload screenshots (if any)
+        if: always()  # Ensure this runs even if scraper fails
         uses: actions/upload-artifact@v4
         with:
           name: debug-screenshots
