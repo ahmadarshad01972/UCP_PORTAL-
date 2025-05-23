@@ -1,10 +1,3 @@
-name: Run UCP Scraper Twice Daily
-
-on:
-  schedule:
-    - cron: '0 6,18 * * *'  # every day at 6am and 6pm UTC
-  workflow_dispatch:         # ✅ enables "Run workflow" button
-
 jobs:
   scrape:
     runs-on: ubuntu-latest
