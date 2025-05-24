@@ -45,7 +45,7 @@ def scrape_user(user, i):
     )
 
     options = Options()
-    options.add_argument("--headless=new")
+    #options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -71,32 +71,31 @@ def scrape_user(user, i):
 
     def handle_stay_signed_in():
         try:
+        # If password field is still present, enter password and click sign in
+            if driver.find_elements(By.CSS_SELECTOR, "#i0118"):
+                print("🔑 Password input still visible — entering password and signing in.")
+                password_input = driver.find_element(By.CSS_SELECTOR, "#i0118")
+                password_input.clear()
+                password_input.send_keys(password)
+                safe_click("#idSIButton9")
+                time.sleep(1)  # short delay to let next prompt appear
+                return  # Exit early — handled password input!
+
+            # Otherwise: handle stay signed in prompt
             wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#idSIButton9")))
             try:
                 checkbox = driver.find_element(By.CSS_SELECTOR, "#KmsiCheckboxField")
                 if not checkbox.is_selected():
                     checkbox.click()
-                    print("Ticked 'Don't show this again'.")
+                    print("✅ Ticked 'Don't show this again'.")
             except:
-                print("Checkbox 'Don't show this again' not found or already ticked.")
-                screenshot_name = f"screenshot2_{email.split('@')[0]}.png"
-                driver.save_screenshot(screenshot_name)
-                print(f"📸 Screenshot saved as {screenshot_name}")
-            try:
-                password_input = WebDriverWait(driver, 5).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "#i0118"))
-                )
-                password_input.send_keys(password)
-                safe_click("#idSIButton9")
-            except:
-                    print("✅ Password not prompted — proceeding.")
+                print("⚠️ Checkbox not found or already ticked.")
+
             safe_click("#idSIButton9")
-            print("Clicked on 'Stay Signed In'.")
-            screenshot_name = f"screenshot3_{email.split('@')[0]}.png"
-            driver.save_screenshot(screenshot_name)
-            print(f"📸 Screenshot saved as {screenshot_name}")
+            print("✅ Clicked 'Stay Signed In'.")
         except:
-            print("Stay signed in prompt not shown or already signed in.")
+            print("✅ Stay signed in prompt not shown — proceeding.")
+
 
     def handle_account_selection_by_aria_label():
         try:
