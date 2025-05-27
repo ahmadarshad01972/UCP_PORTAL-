@@ -5,7 +5,7 @@ from pathlib import Path
 
 # ----- Config -----
 ADMIN_EMAIL = "ahmadarshad01972@gmail.com"
-ADMIN_PASS = "ahmad.2458"
+ADMIN_PASS = "ahmad.24580"
 DATA_DIR = Path("data")
 USER_CREDENTIALS_FILE = "users.json"
 
